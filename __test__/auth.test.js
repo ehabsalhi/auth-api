@@ -3,11 +3,8 @@ require('dotenv').config()
 const base64 = require("base-64")
 const { userSequelize } = require('../src/model')
 const { app } = require('../src/server')
-const bearerCheck = require('../src/middleware/bearerCheck')
 const muke = supertest(app)
-  // "scripts": {
-  //   "test": "echo \"Error: no test specified\" && exit 1"
-  // },
+
 
   beforeAll(async () => {
      await userSequelize.sync()
