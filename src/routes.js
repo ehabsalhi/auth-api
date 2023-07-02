@@ -16,17 +16,24 @@ authRouter.get('/' , (req,res) =>{
      })
 })
 
-authRouter.post('/signup' ,async (req , res) =>{
-     const {username , password , role} = req.body
-     const passHach = await bcrybt.hash(password , 5)
-     const createUser = await user.create({
-          username:username,
-          password :passHach,
-          role : role  
-     })
-     res.status(201).json({
-          user : createUser
-     })
+authRouter.post('/signup' ,async (req , res , next) =>{
+     try{
+
+          const {username , password , role} = req.body
+          const passHach = await bcrybt.hash(password , 5)
+          const createUser = await user.create({
+               username:username,
+               password :passHach,
+               role : role  
+          })
+          res.status(201).json({
+               user : createUser
+          })
+     }
+     catch(err){
+          // console.log(err)
+          next('server error 500')
+     }
 })
 
 authRouter.post('/signin', signin , (req,res) =>{
