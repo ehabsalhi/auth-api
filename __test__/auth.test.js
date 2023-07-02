@@ -115,7 +115,7 @@ describe('server test' , () => {
           const res = await muke.get('/clothes/2').set('Authorization', `Basic ${token}`)
           console.log(JSON.parse(res.text).name);
 
-          expect(JSON.parse(res.text).name).toBe('pants')
+          expect(JSON.parse(res.text).name).toBe('pants 2')
      })
     
      it('update Clothe' ,async () =>{
