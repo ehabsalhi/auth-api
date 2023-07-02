@@ -9,16 +9,16 @@ const muke = supertest(app)
   //   "test": "echo \"Error: no test specified\" && exit 1"
   // },
 
+  beforeAll(async () => {
+     await userSequelize.sync()
+})
 
+afterAll(async () =>{
+     await userSequelize.drop()
+})
 
 describe('server test' , () => {
-     beforeAll(async () => {
-          await userSequelize.sync()
-     })
 
-     afterAll(async () =>{
-          await userSequelize.sync()
-     })
 
      it('signup test' , async () =>{
           const name = 'ehab1'
@@ -81,6 +81,7 @@ describe('server test' , () => {
 
 
      // ===============================================================================================================
+
 
      it('get all clothes' ,async () =>{
           const res = await muke.get('/clothes').set('Authorization', `Basic ${token}`)
