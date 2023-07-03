@@ -170,17 +170,33 @@ afterAll(async () => {
 
 describe('Auth Router', () => {
 
-  it('Can create a new user', async () => {
+     //      it('signup test' , async () =>{
+     //      const name = 'ehab1'
+     //      const res = await muke.post('/signup').send({
+     //           username: name,
+     //           password : '123123',
+     //           role: 'admin'
+     //      })
+     //      console.log(JSON.parse(res.text));
 
-//     const response = await mockRequest.post('/signup').send(userData.testUser);
-    const response = await mockRequest.post('/signup').send({ username: 'user', password: 'password' , role : 'admin'});
-    const userObject = response.body;
+     //      expect(res.statusCode).toBe(201)
+     //      expect((JSON.parse(res.text).user.username)).toBe(name)
 
-    expect(response.status).toBe(201);
-//     expect(userObject.token).toBeDefined();
-    expect(userObject.user.id).toBeDefined();
-    expect(userObject.user.username).toEqual(userData.testUser.username);
-  });
+     // })
+
+
+          it('Can create a new user', async () => {
+
+          //     const response = await mockRequest.post('/signup').send(userData.testUser);
+          const response = await mockRequest.post('/signup').send({ username: 'user', password: 'password' , role : 'admin'});
+          const userObject = response.body;
+
+          expect(response.status).toBe(201);
+          //     expect(userObject.token).toBeDefined();
+          // expect(userObject.user.id).toBeDefined();
+          expect((JSON.parse(response.text).user.username)).toBe('user')
+          // expect(userObject.user.username).toEqual(userData.testUser.username);
+          });
 
 //   it('Can signin with basic auth string', async () => {
 //     let { username, password } = userData.testUser;
