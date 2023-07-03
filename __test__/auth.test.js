@@ -3,14 +3,7 @@
 // const { userSequelize } = require('../src/model')
 // const { app } = require('../src/server')
 // const muke = supertest(app)
-process.env.SECRET = "TEST_SECRET";
-require('dotenv').config()
 
-const base64 = require("base-64")
-const { app } = require('../src/server')
-const { userSequelize } = require('../src/model')
-const supertest = require('supertest');
-const mockRequest = supertest(app);
 
 //   beforeAll(async () => {
 //      await userSequelize.sync()
@@ -81,89 +74,39 @@ const mockRequest = supertest(app);
 //           expect(JSON.parse(res.text).wc).toBe("welcome , you have the access to delete a contant")
 
 //      })
-//      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVoYWIxIiwicGFzc3dvcmQiOiIkMmIkMDUkNW1GYUFCM0JYNEFjRUlzMENReDdodWZ4T1VUZGQ2dGNEdmZLeUk4VEVKQ2RhM2svQ3NBWk8iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2ODgzMTcyOTF9.JfYUG3-Z3AtdSotZa9DxjDdieOQWTgyhGjCbq-Tdkyg'
 
 
 //      // ===============================================================================================================
 
 
-//      it('get all clothes' ,async () =>{
-//           const res = await muke.get('/clothes').set('Authorization', `Basic ${token}`)
-//           // console.log(JSON.parse(res.text));
-//           const list =     [
-//                {
-//                  id: 1,
-//                  name : 'pants' ,
-//                  externalId : 1
-//                }
-//              ]
-//           expect(JSON.parse(res.text).name).toBe(list.name)
-//      })
-//      it('post clothes' ,async () =>{
-//           const res = await muke.post('/clothes').set('Authorization', `Basic ${token}`).send({
-//                name : 'pants' ,
-//                externalId : 1
-//           })
-//           // console.log(JSON.parse(res.text).name);
-//           expect(JSON.parse(res.text).name).toBe('pants')
-//      })
-//      it('post clothes 2' ,async () =>{
-//           const res = await muke.post('/clothes').set('Authorization', `Basic ${token}`).send({
-//                name : 'pants 2' ,
-//                externalId : 2
-//           })
-//           // console.log(JSON.parse(res.text).name);
-//           expect(JSON.parse(res.text).name).toBe('pants 2')
-//      })
-//      it('get one clothe' ,async () =>{
-//           const res = await muke.get('/clothes/2').set('Authorization', `Basic ${token}`)
-//           // console.log(JSON.parse(res.text).name);
+process.env.SECRET = "TEST_SECRET";
+require('dotenv').config()
 
-//           expect(JSON.parse(res.text).name).toBe('pants 2')
-//      })
-    
-//      it('update Clothe' ,async () =>{
-//           const res = await muke.put('/clothes/1').set('Authorization', `Basic ${token}`).send({
-//                name : 'shirt',
-//                externalId : 3
-//           })
-//           // console.log(JSON.parse(res.statusCode) , '77777777777777777777777');
-
-//           expect(res.statusCode).toBe(202)
-//      })
-
-//      it('delteteClothe' ,async () =>{
-//           const res = await muke.delete('/clothes/1').set('Authorization', `Basic ${token}`)
-          
-
-//           expect(res.status).toBe(204)
-//      })
-
-
-// })
-
-
-'use strict';
-
-
-
-
-let userData = {
-  testUser: { username: 'user', password: 'password' , role : 'admin'},
-};
-let accessToken = null;
+const base64 = require("base-64")
+const { app } = require('../src/server')
+const { userSequelize } = require('../src/model')
+const supertest = require('supertest');
+const mockRequest = supertest(app);
 
 beforeAll(async () => {
-  await userSequelize.sync();
-});
-afterAll(async () => {
-  await userSequelize.drop();
-});
+     await userSequelize.sync();
+   });
+   afterAll(async () => {
+     await userSequelize.drop();
+   });
 
-describe('Auth Router', () => {
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJwYXNzd29yZCI6IiQyYiQwNSQycXppSVRPY3JDeElsc1M2bk1oZGguQVpNdlBINE04TlVOMEtYeU5LQ0FSRkQ1ODZyVi9UUyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY4ODM0NTA2MX0.c8acHRxgVrgJuQ2aGMTsiXdmWmgBg18VBUeznF0N1Zk'
 
+let userData = {
+     testUser: { username: 'user', password: 'password' , role : 'admin'},
+   };
+   let accessToken = null;
+   
+   
 
-          it('Can create a new user', async () => {
+describe('server test' , () => {
+
+     it('Can create a new user', async () => {
 
           //     const response = await mockRequest.post('/signup').send(userData.testUser);
           const response = await mockRequest.post('/signup').send({ username: 'user', password: 'password' , role : 'admin'});
@@ -176,20 +119,90 @@ describe('Auth Router', () => {
           expect(userObject.user.username).toEqual(userData.testUser.username);
           });
 
-  it('Can signin with basic auth string', async () => {
-    let { username, password } = userData.testUser;
+     it('Can signin with basic auth string', async () => {
+     let { username, password } = userData.testUser;
 
-    const response = await mockRequest.post('/signin')
-      .auth(username, password);
+     const response = await mockRequest.post('/signin')
+          .auth(username, password);
 
-    const userObject = response.body;
-    console.log(userObject.message , '77777777777');
-        expect(userObject.message.user.token).toBeDefined();
-        expect(userObject.message.user.id).toBeDefined();
-    expect(response.status).toBe(200);
-    expect(userObject.message.user.username).toEqual(username);
-  });
+     const userObject = response.body;
+     console.log(userObject.message , '77777777777');
 
+
+          expect(userObject.message.user.token).toBeDefined();
+          expect(userObject.message.user.id).toBeDefined();
+          expect(response.status).toBe(200);
+          expect(userObject.message.user.username).toEqual(username);
+     });
+
+// =================================================================================================
+     it('get all clothes' ,async () =>{
+          const res = await mockRequest.get('/clothes').set('Authorization', `Basic ${token}`)
+          // console.log(JSON.parse(res.text));
+          const list =     [
+               {
+                 id: 1,
+                 name : 'pants' ,
+                 externalId : 1
+               }
+             ]
+          expect(JSON.parse(res.text).name).toBe(list.name)
+     })
+     it('post clothes' ,async () =>{
+          const res = await mockRequest.post('/clothes').set('Authorization', `Basic ${token}`).send({
+               name : 'pants' ,
+               externalId : 1
+          })
+          // console.log(JSON.parse(res.text).name);
+          expect(JSON.parse(res.text).name).toBe('pants')
+     })
+     it('post clothes 2' ,async () =>{
+          const res = await mockRequest.post('/clothes').set('Authorization', `Basic ${token}`).send({
+               name : 'pants 2' ,
+               externalId : 2
+          })
+          // console.log(JSON.parse(res.text).name);
+          expect(JSON.parse(res.text).name).toBe('pants 2')
+     })
+     it('get one clothe' ,async () =>{
+          const res = await mockRequest.get('/clothes/2').set('Authorization', `Basic ${token}`)
+          // console.log(JSON.parse(res.text).name);
+
+          expect(JSON.parse(res.text).name).toBe('pants 2')
+     })
+    
+     it('update Clothe' ,async () =>{
+          const res = await mockRequest.put('/clothes/1').set('Authorization', `Basic ${token}`).send({
+               name : 'shirt',
+               externalId : 3
+          })
+          // console.log(JSON.parse(res.statusCode) , '77777777777777777777777');
+
+          expect(res.statusCode).toBe(202)
+     })
+
+     it('delteteClothe' ,async () =>{
+          const res = await mockRequest.delete('/clothes/1').set('Authorization', `Basic ${token}`)
+          
+
+          expect(res.status).toBe(204)
+     })
+
+
+})
+
+
+'use strict';
+
+
+
+
+
+
+// describe('Auth Router', () => {
+
+
+// }
 
 
 
@@ -267,4 +280,4 @@ describe('Auth Router', () => {
 //     expect(response.status).toBe(403);
 //     expect(response.text).toEqual("Invalid Login");
 //   });
-});
+// });
