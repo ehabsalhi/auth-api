@@ -1,10 +1,16 @@
 // const supertest = require('supertest')
 // require('dotenv').config()
-// const base64 = require("base-64")
 // const { userSequelize } = require('../src/model')
 // const { app } = require('../src/server')
 // const muke = supertest(app)
+process.env.SECRET = "TEST_SECRET";
+require('dotenv').config()
 
+const base64 = require("base-64")
+const { app } = require('../src/server')
+const { userSequelize } = require('../src/model')
+const supertest = require('supertest');
+const mockRequest = supertest(app);
 
 //   beforeAll(async () => {
 //      await userSequelize.sync()
@@ -139,21 +145,7 @@
 
 'use strict';
 
-process.env.SECRET = "TEST_SECRET";
 
-// const supertest = require('supertest')
-require('dotenv').config()
-const base64 = require("base-64")
-// const muke = supertest(app)
-
-
-// const { userSequelize } = require('../../../../src/auth/models');
-// const server = require('../../../../src/server.js').server;
-
-const { app } = require('../src/server')
-const { userSequelize } = require('../src/model')
-const supertest = require('supertest');
-const mockRequest = supertest(app);
 
 
 let userData = {
@@ -170,20 +162,6 @@ afterAll(async () => {
 
 describe('Auth Router', () => {
 
-     //      it('signup test' , async () =>{
-     //      const name = 'ehab1'
-     //      const res = await muke.post('/signup').send({
-     //           username: name,
-     //           password : '123123',
-     //           role: 'admin'
-     //      })
-     //      console.log(JSON.parse(res.text));
-
-     //      expect(res.statusCode).toBe(201)
-     //      expect((JSON.parse(res.text).user.username)).toBe(name)
-
-     // })
-
 
           it('Can create a new user', async () => {
 
@@ -193,23 +171,29 @@ describe('Auth Router', () => {
 
           expect(response.status).toBe(201);
           //     expect(userObject.token).toBeDefined();
-          // expect(userObject.user.id).toBeDefined();
+          expect(userObject.user.id).toBeDefined();
           expect((JSON.parse(response.text).user.username)).toBe('user')
-          // expect(userObject.user.username).toEqual(userData.testUser.username);
+          expect(userObject.user.username).toEqual(userData.testUser.username);
           });
 
-//   it('Can signin with basic auth string', async () => {
-//     let { username, password } = userData.testUser;
+  it('Can signin with basic auth string', async () => {
+    let { username, password } = userData.testUser;
 
-//     const response = await mockRequest.post('/signin')
-//       .auth(username, password);
+    const response = await mockRequest.post('/signin')
+      .auth(username, password);
 
-//     const userObject = response.body;
-//     expect(response.status).toBe(200);
-//     expect(userObject.token).toBeDefined();
-//     expect(userObject.user.id).toBeDefined();
-//     expect(userObject.user.username).toEqual(username);
-//   });
+    const userObject = response.body;
+    console.log(userObject.message , '77777777777');
+        expect(userObject.message.user.token).toBeDefined();
+        expect(userObject.message.user.id).toBeDefined();
+    expect(response.status).toBe(200);
+    expect(userObject.message.user.username).toEqual(username);
+  });
+
+
+
+
+
 
 //   it('Can signin with bearer auth token', async () => {
 //     let { username, password } = userData.testUser;
@@ -218,7 +202,7 @@ describe('Auth Router', () => {
 //     const response = await mockRequest.post('/signin')
 //       .auth(username, password);
 
-//     accessToken = response.body.token;
+//     accessToken = response.body.message.token;
 
 //     // First, use basic to login to get a token
 //     const bearerResponse = await mockRequest
