@@ -172,7 +172,8 @@ describe('Auth Router', () => {
 
   it('Can create a new user', async () => {
 
-    const response = await mockRequest.post('/signup').send(userData.testUser);
+//     const response = await mockRequest.post('/signup').send(userData.testUser);
+    const response = await mockRequest.post('/signup').send({ username: 'user', password: 'password' , role : 'admin'});
     const userObject = response.body;
 
     expect(response.status).toBe(201);
