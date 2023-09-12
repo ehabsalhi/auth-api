@@ -4,6 +4,7 @@ const bcrybt = require('bcrypt')
 const signin = require("./middleware/signin")
 const bearerCheck = require("./middleware/bearerCheck")
 const checkCap = require("./middleware/checkCap")
+const todo = require("./model/todo")
 
 
 const  authRouter  = express.Router()
@@ -44,7 +45,39 @@ authRouter.post('/signin', signin , (req,res) =>{
      res.status(200).json({
           message : req.ehab
      })
-} )
+})
+
+authRouter.get('/todo', async (req, res) => {
+     const data = await todo.findAll()
+     res.status(200).json({
+          data
+     })
+})
+
+authRouter.post('/todo', async (req, res) => {
+     const body = req.body
+     const data = await todo.create(body)
+     res.status(201).json({
+          data
+     })
+})
+
+authRouter.put('/todo/:id', async (req, res) => {
+     const id = req.params.id
+     const body = req.body
+     const data = await todo.update(body, {where:{id}} )
+     res.status(202).json({
+          data
+     })
+})
+
+authRouter.delete('/todo/:id', async (req, res) => {
+     const id = req.params.id
+     const data = await todo.destroy({where:{id}})
+     res.status(204).json({
+          data
+     })
+})
 
 
 authRouter.get('/order', bearerCheck , (req,res) =>{
@@ -97,7 +130,7 @@ authRouter.delete('/order', bearerCheck , checkCap('delete'), (req,res) =>{
                message : 'no access'
           })
      }
-} )
+})
 
 
 module.exports = authRouter
