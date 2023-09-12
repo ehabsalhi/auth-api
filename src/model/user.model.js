@@ -42,7 +42,8 @@ const user = userSequelize.define('userACL' , {
 
 user.checkUSer = async (username , password) => {
      const checkUser= await user.findOne({where:{username}})
-     const checkPass = await bcrypt.compare(password , checkUser.password)
+     const checkPass = await bcrypt.compare(password, checkUser.password)
+     console.log(checkPass);
      if(checkPass){
           // const signToken = jwt.sign({username : checkUser.username , password : checkUser.username} , process.env.SECRET)
           return {
