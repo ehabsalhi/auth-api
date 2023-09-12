@@ -16,6 +16,10 @@ authRouter.get('/' , (req,res) =>{
      })
 })
 
+
+authRouter.get('/signup', (req, res) => {
+     res.status(200).json({ message: 'sign up page'})
+})
 authRouter.post('/signup' ,async (req , res , next) =>{
      try{
 

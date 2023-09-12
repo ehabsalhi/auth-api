@@ -6,6 +6,5 @@ module.exports = (cap) =>{
           }else{
                next('access denaid')
           }
-          
      } 
 }
