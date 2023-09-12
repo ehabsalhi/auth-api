@@ -18,7 +18,7 @@ const user = userSequelize.define('userACL' , {
      token : {
           type : DataTypes.VIRTUAL ,
           get (){
-               return jwt.sign({username : this.username , password : this.password , role : this.role} , process.env.SECRET)
+               return jwt.sign({username : this.username , password : this.password , role : this.role , capabilities : this.capabilities} , process.env.SECRET)
           }
      },
      role : {
